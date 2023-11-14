@@ -1,0 +1,17 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: UPDATE REPOSITORY INDEX
+    apt:
+      update_cache: yes
+    
+  - name: INSTALL APACHE2 PACKAGE
+    apt:
+      name: apache2
+
+  - name: INSTALL PHP SUPPORT
+    apt: 
+      name: libapache2-mod-php
