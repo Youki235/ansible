@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+    
+  - name: Instal HTTPD
+    tags: apache, httpd
+    package:
+      - name: 
+        - httpd
+        - php
+    when: ansible_distribution == "Ubuntu"
+
+  - name: COPY FILES TO SRAKA DIRECTORY
+    tags: apache, httpd
+    copy: 
+    src: default_site.html
+    dest: home/youki/sraka
+       owner: root
+       group: root
+       mode: 0664
+    when: ansible_distribution == "Ubuntu" 

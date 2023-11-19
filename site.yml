@@ -31,6 +31,23 @@
       state: latest
     when: ansible_distribution == 'Ubuntu'
 
+  - name: INSTALL HTTPD
+    tags: apache, httpd
+    package:
+      - httpd
+      - php
+    when: ansible_distribution == "Ubuntu"
+
+  - name: COPY Default HTML file to the server
+    tags: apache, httpd
+    copy:
+       src: files/default_site.html
+       dest: /var/www/html/index.html
+       owner: root
+       group: root
+       mode: 0644
+    when: ansible_distribution == "Ubuntu"
+    
   - name: ADD NEW JENKINS USER
     tags: add_user
     ansible.builtin.user:
