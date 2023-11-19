@@ -1,0 +1,50 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: install updates (CentOS)
+    tags: centos
+    package:
+      update_only: yes
+      update_cashe: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: install updates (Ubuntu)
+    tags: always
+    package:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: Ubuntu
+  become: true
+  tasks: 
+
+  - name: INSTALL APACHE and LIBAPACHE2-MOD-HPH
+    tags: ubuntu, apache
+    package:
+      name: 
+        - "{{ apache_package }}"
+        - "{{ php_package }}"
+      state: latest
+    when: ansible_distribution == 'Ubuntu'
+
+  - name: ADD NEW JENKINS USER
+    tags: add_user
+    ansible.builtin.user:
+      name: jenkins
+      comment: Jenkins shit
+      uid: 2137
+      group: root
+    when: ansible_distribution == "Ubuntu"
+
+  - name: DELETE JENKINS
+    tags: delete_user
+    ansible.builtin.user:
+      name: jenkins
+      state: absent
+      remove: yes
+    when: ansible_distribution == "Ubuntu"  
+

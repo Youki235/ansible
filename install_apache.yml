@@ -4,14 +4,11 @@
   become: true
   tasks:
 
-  - name: UPDATE REPOSITORY INDEX
-    apt:
+  - name: INSTALL APACHE and LIBAPACHE2-MOD-HPH
+    package:
+      name: 
+        - "{{ apache_package }}"
+        - "{{ php_package }}"
+      state: latest
       update_cache: yes
-    
-  - name: INSTALL APACHE2 PACKAGE
-    apt:
-      name: apache2
-
-  - name: INSTALL PHP SUPPORT
-    apt: 
-      name: libapache2-mod-php
+    when: ansible_distribution == 'Ubuntu'
