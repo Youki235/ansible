@@ -1,0 +1,24 @@
+- hosts: Ubuntu
+  become: true
+  tasks:
+  - name: Create new user  
+    tags: always
+    user: 
+      name: Simone
+      groups: root
+
+  - name: Add ssh key for Simone
+    tags: always
+    authorized_key:
+      user: Simone
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINe8n+c7TxvUHhH1IbEAbxjdFOedpLklXN9HehOD9wXQ ansible"
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Add sudores file for Simone
+    copy: 
+      src: sudoer_simone
+      dest: /etc/sudoers.d/simone
+      owner: root
+      group: root
+      mode: 0440
+    when: ansible_distribution == "Ubuntu"
